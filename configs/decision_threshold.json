@@ -1,0 +1,21 @@
+{
+  "positive_class": "occupied",
+  "selection_dataset": "validation",
+  "selection_metric": "balanced_accuracy",
+  "threshold": 0.017097605392336845,
+  "validation_metrics": {
+    "threshold": 0.017097605392336845,
+    "accuracy": 0.9868421052631579,
+    "balanced_accuracy": 0.9722222222222222,
+    "precision": 0.9830508474576272,
+    "recall": 1.0,
+    "specificity": 0.9444444444444444,
+    "f1": 0.9914529914529915,
+    "confusion_matrix": {
+      "true_negative": 17,
+      "false_positive": 1,
+      "false_negative": 0,
+      "true_positive": 58
+    }
+  }
+}

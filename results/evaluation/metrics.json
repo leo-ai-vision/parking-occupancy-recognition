@@ -1,0 +1,16 @@
+{
+  "threshold": 0.017097605392336845,
+  "accuracy": 0.975609756097561,
+  "balanced_accuracy": 0.9473684210526316,
+  "precision": 0.9692307692307692,
+  "recall": 1.0,
+  "specificity": 0.8947368421052632,
+  "f1": 0.9843749999999999,
+  "confusion_matrix": {
+    "true_negative": 34,
+    "false_positive": 4,
+    "false_negative": 0,
+    "true_positive": 126
+  },
+  "auc": 0.9873642921447754
+}

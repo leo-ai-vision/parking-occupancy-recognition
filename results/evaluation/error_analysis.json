@@ -1,0 +1,34 @@
+[
+  {
+    "source_path": "data\\raw\\parking_spots\\test\\empty\\spot65.jpg",
+    "saved_path": "results\\evaluation\\error_samples\\error_01_actual_empty_predicted_occupied_score_0.017163.jpg",
+    "actual": "empty",
+    "predicted": "occupied",
+    "score": 0.01716282032430172,
+    "threshold": 0.017097605392336845
+  },
+  {
+    "source_path": "data\\raw\\parking_spots\\test\\empty\\spot78.jpg",
+    "saved_path": "results\\evaluation\\error_samples\\error_02_actual_empty_predicted_occupied_score_0.019760.jpg",
+    "actual": "empty",
+    "predicted": "occupied",
+    "score": 0.019760439172387123,
+    "threshold": 0.017097605392336845
+  },
+  {
+    "source_path": "data\\raw\\parking_spots\\test\\empty\\spot81.jpg",
+    "saved_path": "results\\evaluation\\error_samples\\error_03_actual_empty_predicted_occupied_score_0.019518.jpg",
+    "actual": "empty",
+    "predicted": "occupied",
+    "score": 0.01951846480369568,
+    "threshold": 0.017097605392336845
+  },
+  {
+    "source_path": "data\\raw\\parking_spots\\test\\empty\\spot89.jpg",
+    "saved_path": "results\\evaluation\\error_samples\\error_04_actual_empty_predicted_occupied_score_0.019105.jpg",
+    "actual": "empty",
+    "predicted": "occupied",
+    "score": 0.01910468563437462,
+    "threshold": 0.017097605392336845
+  }
+]
