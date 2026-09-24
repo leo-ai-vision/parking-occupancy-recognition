@@ -1,7 +1,7 @@
 import json
 import time
 from pathlib import Path
-
+import os
 import cv2
 import tensorflow as tf
 
@@ -286,11 +286,44 @@ def main():
                 threshold,
             )
 
-            # 显示当前视频帧编号
+            # 显示空车位数量
+            cv2.putText(
+                output_frame,
+                f"Available: {available_count}",
+                (30, 50),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                1.2,
+                (0, 255, 0),
+                3,
+            )
+
+            # 显示已占用车位数量
+            cv2.putText(
+                output_frame,
+                f"Occupied: {occupied_count}",
+                (30, 100),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                1.2,
+                (0, 0, 255),
+                3,
+            )
+
+            # 显示总车位数量
+            cv2.putText(
+                output_frame,
+                f"Total: {len(parking_spots)}",
+                (30, 150),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                1.0,
+                (255, 255, 255),
+                2,
+            )
+
+            # 当前帧
             cv2.putText(
                 output_frame,
                 f"Frame: {frame_index}",
-                (30, 150),
+                (30, 195),
                 cv2.FONT_HERSHEY_SIMPLEX,
                 0.65,
                 (255, 255, 255),
@@ -442,6 +475,8 @@ def main():
         f"Statistics saved to: "
         f"{STATS_PATH}"
     )
+    # 自动打开生成的视频
+    os.startfile(OUTPUT_VIDEO_PATH.resolve())
 
 
 if __name__ == "__main__":
