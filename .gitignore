@@ -27,3 +27,7 @@ Thumbs.db
 
 # Local partial output produced when live playback is stopped with Q
 results/inference/parking_occupancy_output.mp4
+
+# Runtime inference outputs
+results/inference/parking_occupancy_result.mp4
+results/inference/video_inference_stats.json
