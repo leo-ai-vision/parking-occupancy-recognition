@@ -1,0 +1,13 @@
+{
+  "image_size": {
+    "width": 10,
+    "height": 10
+  },
+  "spot_count": 1,
+  "spots": [
+    {
+      "id": 1,
+      "bbox": [1, 2, 11, 6]
+    }
+  ]
+}

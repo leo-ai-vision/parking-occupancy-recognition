@@ -31,3 +31,16 @@ results/inference/parking_occupancy_output.mp4
 # Runtime inference outputs
 results/inference/parking_occupancy_result.mp4
 results/inference/video_inference_stats.json
+# C++ build files and generated inference results
+cpp/build/
+results/inference/cpp/
+# Generated preprocessing comparison data
+results/evaluation/*.f32
+
+# Local export attempts and comparison reports
+checkpoints/*_failed_export.onnx
+results/evaluation/cpp_predictions_frame_*.csv
+results/evaluation/*_parity.json
+
+# Internal working notes
+docs/superpowers/plans/

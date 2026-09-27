@@ -1,9 +1,10 @@
 # Parking Occupancy Recognition
 
-An end-to-end fixed-camera parking occupancy system built with OpenCV and
-TensorFlow/Keras. The project detects parking-lane geometry, generates 553
-parking-space coordinates, classifies each space as empty or occupied, and
-renders the results on a complete parking-lot video.
+An end-to-end fixed-camera parking occupancy system. Python and TensorFlow/Keras
+handle data preparation and model training; a C++17 application uses OpenCV and
+ONNX Runtime for video inference. The project detects parking-lane geometry,
+generates 553 parking-space coordinates, classifies each space as empty or
+occupied, and renders the results on a complete parking-lot video.
 
 ![Parking occupancy prediction](results/inference/frame_001410_prediction.jpg)
 
@@ -22,6 +23,8 @@ renders the results on a complete parking-lot video.
   occupancy once per second.
 - Saves an annotated video and optionally displays the result in an OpenCV
   window. Press `Q` to stop the live display.
+- Includes a C++17 inference path that processes the complete video and records
+  occupancy state changes.
 
 ## Results
 
@@ -143,7 +146,8 @@ parking-occupancy-recognition/
 |-- train_classifier.py
 |-- evaluate_classifier.py
 |-- predict_frame.py
-`-- run_video_inference.py
+|-- run_video_inference.py
+`-- cpp/                            # C++17 / OpenCV / ONNX Runtime inference
 ```
 
 ## Installation
@@ -205,13 +209,48 @@ Run full-video inference:
 python run_video_inference.py
 ```
 
-The complete annotated output is saved to
-`results/inference/parking_occupancy_result.mp4`. Set `DISPLAY_WINDOW = True`
-in `run_video_inference.py` to display the video during processing; press `Q`
-to stop.
+The complete annotated output is saved locally to
+`results/inference/parking_occupancy_result.mp4` and is ignored by Git.
+The curated, complete video published with this repository is `docs/demo.mp4`.
+Set `DISPLAY_WINDOW = True` in `run_video_inference.py` to display the video
+during processing; press `Q` to stop.
+
+## C++ video deployment (Ubuntu / WSL)
+
+The C++ program reuses the 553-space configuration and the exported ONNX
+classifier. From the repository root in Ubuntu or WSL, install the development
+libraries, configure a Release build, and run the complete video:
+
+```bash
+sudo apt install build-essential cmake libopencv-dev nlohmann-json3-dev libonnxruntime-dev
+cmake -S cpp -B cpp/build -DCMAKE_BUILD_TYPE=Release
+cmake --build cpp/build --target run_video_cpp -j2
+./cpp/build/run_video_cpp data/raw/videos/parking_video.mp4 results/inference/cpp/parking_occupancy_cpp.mp4
+```
+
+The exported model is included at `checkpoints/best_parking_classifier.onnx`; to
+regenerate it from the Keras checkpoint, run `python export_onnx.py` in the
+TensorFlow environment after moving the existing ONNX file aside. Run the
+executable from the repository root because its model and configuration paths
+are relative to the current directory. It writes an annotated MP4, a sibling
+`.events.jsonl` file containing occupancy state changes, and a sibling
+`.stats.json` file. The first valid prediction establishes the initial state;
+later events include the frame index, video time, spot ID, old/new state, and
+occupied score. Existing output files are never overwritten; choose a new
+output filename for another run. `docs/demo.mp4` is protected.
+
+On the included 1452-frame, 1280 x 720 video, a WSL2 Ubuntu 26.04.1 Release
+build using OpenCV 4.10.0 and ONNX Runtime 1.23.2 processed all frames, ran
+60 batches of 553 spaces, and emitted 617 state-change events. The measured
+frame-loop speed was 96.55 FPS with 61.97 ms mean batch inference time on an
+Intel Core Ultra 7 255HX CPU. These are C++ measurements, separate from the
+TensorFlow/Windows benchmark above. The generated video was decoded through
+all 1452 frames; the event JSONL and statistics JSON were parsed successfully.
+On representative frame 001410, Keras and C++ agreed on all 553 occupancy
+classes with a maximum score difference of 8.57e-8.
 
 - [Download the 10-second annotated preview](results/inference/parking_occupancy_preview.mp4)
-- [Download the complete annotated video](results/inference/parking_occupancy_result.mp4)
+- [Download the complete annotated demo](docs/demo.mp4)
 
 ## Design Decisions
 
@@ -233,6 +272,10 @@ to stop.
 - The labeled dataset is small and class imbalanced.
 - The operating threshold is model-specific and should be recalibrated after
   retraining or changing the deployment domain.
+- The tested Ubuntu ONNX Runtime package prints duplicate ONNX schema
+  registration diagnostics when the C++ program starts. This run completed,
+  and the representative frame had zero Python/C++ class mismatches; the
+  startup diagnostics have not yet been eliminated.
 
 ## License
 
